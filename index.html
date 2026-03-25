@@ -1,0 +1,327 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>GrupoCODEIT — Consultoría y Desarrollo de Tecnología Informática</title>
+<meta name="description" content="Apps Android, consultoría tecnológica y desarrollo de software. Descarga nuestras apps en Google Play.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Sans:wght@400;500;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --cyan: #00D4FF;
+    --cyan-dark: #00B8E0;
+    --cyan-glow: rgba(0, 212, 255, 0.15);
+    --black: #0A0A0A;
+    --black-card: #1A1A1A;
+    --white: #FFFFFF;
+    --gray: #888888;
+    --gray-light: #CCCCCC;
+  }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  html { scroll-behavior: smooth; }
+  body {
+    font-family: 'DM Sans', sans-serif;
+    background: var(--black);
+    color: var(--white);
+    overflow-x: hidden;
+  }
+  body::before {
+    content: '';
+    position: fixed;
+    inset: 0;
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.03'/%3E%3C/svg%3E");
+    pointer-events: none;
+    z-index: 9999;
+  }
+
+  nav {
+    position: fixed; top: 0; left: 0; right: 0; z-index: 1000;
+    padding: 1.2rem 2rem;
+    display: flex; justify-content: space-between; align-items: center;
+    background: rgba(10,10,10,0.85);
+    backdrop-filter: blur(20px);
+    border-bottom: 1px solid rgba(0,212,255,0.1);
+  }
+  .nav-logo { font-family:'Bebas Neue',sans-serif; font-size:1.8rem; letter-spacing:2px; color:var(--white); text-decoration:none; }
+  .nav-logo span { color:var(--cyan); }
+  .nav-links { display:flex; gap:2rem; list-style:none; }
+  .nav-links a { color:var(--gray-light); text-decoration:none; font-size:0.85rem; font-weight:500; letter-spacing:1px; text-transform:uppercase; transition:color 0.3s; }
+  .nav-links a:hover { color:var(--cyan); }
+  .hamburger { display:none; flex-direction:column; gap:5px; cursor:pointer; background:none; border:none; padding:4px; }
+  .hamburger span { width:24px; height:2px; background:var(--white); transition:all 0.3s; }
+
+  .hero {
+    min-height: 100vh; display: flex; flex-direction: column;
+    justify-content: center; align-items: center; text-align: center;
+    padding: 6rem 2rem 4rem; position: relative; overflow: hidden;
+  }
+  .hero::before {
+    content:''; position:absolute; width:600px; height:600px;
+    background:radial-gradient(circle,var(--cyan-glow) 0%,transparent 70%);
+    top:10%; right:-10%; border-radius:50%; animation:pulse 6s ease-in-out infinite;
+  }
+  .hero::after {
+    content:''; position:absolute; width:400px; height:400px;
+    background:radial-gradient(circle,rgba(0,212,255,0.08) 0%,transparent 70%);
+    bottom:10%; left:-5%; border-radius:50%; animation:pulse 8s ease-in-out infinite reverse;
+  }
+  @keyframes pulse { 0%,100%{transform:scale(1);opacity:.5} 50%{transform:scale(1.2);opacity:1} }
+  .hero-content { position:relative; z-index:2; }
+  .hero-badge {
+    display:inline-block; padding:0.4rem 1.2rem;
+    border:1px solid rgba(0,212,255,0.3); border-radius:50px;
+    font-size:0.75rem; font-weight:500; letter-spacing:2px;
+    text-transform:uppercase; color:var(--cyan); margin-bottom:2rem;
+    animation:fadeInUp 0.8s ease forwards; opacity:0;
+  }
+  .hero h1 {
+    font-family:'Bebas Neue',sans-serif; font-size:clamp(4rem,12vw,10rem);
+    line-height:0.9; letter-spacing:4px; margin-bottom:1.5rem;
+    animation:fadeInUp 0.8s ease 0.2s forwards; opacity:0;
+  }
+  .hero h1 .accent { color:var(--cyan); }
+  .hero-sub {
+    font-size:1.1rem; color:var(--gray); max-width:500px;
+    margin:0 auto 2.5rem; line-height:1.6;
+    animation:fadeInUp 0.8s ease 0.4s forwards; opacity:0;
+  }
+  .hero-buttons {
+    display:flex; gap:1rem; justify-content:center; flex-wrap:wrap;
+    animation:fadeInUp 0.8s ease 0.6s forwards; opacity:0;
+  }
+  .btn {
+    padding:0.9rem 2.2rem; border-radius:6px; font-family:'DM Sans',sans-serif;
+    font-size:0.85rem; font-weight:700; letter-spacing:1px;
+    text-transform:uppercase; text-decoration:none; cursor:pointer;
+    transition:all 0.3s; border:none;
+  }
+  .btn-primary { background:var(--cyan); color:var(--black); }
+  .btn-primary:hover { background:var(--cyan-dark); box-shadow:0 0 30px rgba(0,212,255,0.3); transform:translateY(-2px); }
+  .btn-outline { background:transparent; color:var(--white); border:1px solid rgba(255,255,255,0.2); }
+  .btn-outline:hover { border-color:var(--cyan); color:var(--cyan); transform:translateY(-2px); }
+  @keyframes fadeInUp { from{opacity:0;transform:translateY(30px)} to{opacity:1;transform:translateY(0)} }
+
+  section { padding:6rem 2rem; max-width:1200px; margin:0 auto; }
+  .section-label { font-size:0.7rem; font-weight:700; letter-spacing:3px; text-transform:uppercase; color:var(--cyan); margin-bottom:1rem; }
+  .section-title { font-family:'Bebas Neue',sans-serif; font-size:clamp(2.5rem,5vw,4rem); letter-spacing:2px; margin-bottom:1rem; }
+  .section-desc { color:var(--gray); max-width:600px; line-height:1.7; margin-bottom:3rem; }
+
+  .apps-grid { display:grid; grid-template-columns:repeat(auto-fill,minmax(280px,1fr)); gap:1.5rem; }
+  .app-card {
+    background:var(--black-card); border:1px solid rgba(255,255,255,0.06);
+    border-radius:12px; padding:2rem; transition:all 0.4s;
+    position:relative; overflow:hidden;
+  }
+  .app-card::before {
+    content:''; position:absolute; top:0;left:0;right:0; height:3px;
+    background:linear-gradient(90deg,var(--cyan),transparent);
+    opacity:0; transition:opacity 0.4s;
+  }
+  .app-card:hover { border-color:rgba(0,212,255,0.2); transform:translateY(-4px); box-shadow:0 20px 40px rgba(0,0,0,0.3); }
+  .app-card:hover::before { opacity:1; }
+  .app-icon {
+    width:56px; height:56px; background:linear-gradient(135deg,var(--cyan),var(--cyan-dark));
+    border-radius:14px; display:flex; align-items:center; justify-content:center;
+    font-size:1.5rem; margin-bottom:1.2rem;
+  }
+  .app-card h3 { font-size:1.1rem; font-weight:700; margin-bottom:0.5rem; }
+  .app-card p { color:var(--gray); font-size:0.88rem; line-height:1.5; margin-bottom:1rem; }
+  .app-tag { display:inline-block; padding:0.25rem 0.7rem; background:rgba(0,212,255,0.1); color:var(--cyan); border-radius:4px; font-size:0.7rem; font-weight:700; letter-spacing:1px; text-transform:uppercase; }
+  .app-link { display:inline-flex; align-items:center; gap:0.4rem; color:var(--cyan); text-decoration:none; font-size:0.85rem; font-weight:600; margin-top:0.8rem; transition:gap 0.3s; }
+  .app-link:hover { gap:0.8rem; }
+
+  .services-grid { display:grid; grid-template-columns:repeat(auto-fill,minmax(280px,1fr)); gap:1.5rem; }
+  .service-card { padding:2rem; border:1px solid rgba(255,255,255,0.06); border-radius:12px; transition:all 0.3s; }
+  .service-card:hover { border-color:rgba(0,212,255,0.15); background:var(--black-card); }
+  .service-icon { font-size:2rem; margin-bottom:1rem; }
+  .service-card h3 { font-size:1.05rem; font-weight:700; margin-bottom:0.5rem; }
+  .service-card p { color:var(--gray); font-size:0.88rem; line-height:1.6; }
+
+  .yt-banner {
+    background:var(--black-card); border:1px solid rgba(255,255,255,0.06);
+    border-radius:12px; padding:2.5rem; display:flex; align-items:center;
+    gap:2rem; transition:all 0.3s; text-decoration:none; color:var(--white);
+  }
+  .yt-banner:hover { border-color:rgba(255,0,0,0.3); transform:translateY(-3px); box-shadow:0 20px 40px rgba(0,0,0,0.3); }
+  .yt-banner-icon { width:60px; height:60px; background:#FF0000; border-radius:14px; display:flex; align-items:center; justify-content:center; flex-shrink:0; }
+  .yt-banner-icon svg { width:28px; height:28px; fill:white; }
+  .yt-banner-text h3 { font-size:1.2rem; font-weight:700; margin-bottom:0.3rem; }
+  .yt-banner-text p { color:var(--gray); font-size:0.9rem; line-height:1.5; }
+  .yt-banner-arrow { margin-left:auto; font-size:1.5rem; color:var(--gray); transition:color 0.3s; }
+  .yt-banner:hover .yt-banner-arrow { color:#FF0000; }
+
+  footer { border-top:1px solid rgba(255,255,255,0.06); padding:3rem 2rem; max-width:1200px; margin:0 auto; }
+  .footer-content { display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:2rem; }
+  .footer-brand { font-family:'Bebas Neue',sans-serif; font-size:1.5rem; letter-spacing:2px; }
+  .footer-brand span { color:var(--cyan); }
+  .social-links { display:flex; gap:1rem; }
+  .social-link {
+    width:42px; height:42px; border:1px solid rgba(255,255,255,0.1);
+    border-radius:10px; display:flex; align-items:center; justify-content:center;
+    text-decoration:none; color:var(--gray-light); transition:all 0.3s;
+  }
+  .social-link:hover { border-color:var(--cyan); color:var(--cyan); background:rgba(0,212,255,0.05); }
+  .social-link svg { width:18px; height:18px; fill:currentColor; }
+  .footer-links { width:100%; display:flex; justify-content:center; gap:2rem; margin-top:1.5rem; padding-top:1.5rem; border-top:1px solid rgba(255,255,255,0.04); }
+  .footer-links a { color:var(--gray); text-decoration:none; font-size:0.8rem; transition:color 0.3s; }
+  .footer-links a:hover { color:var(--cyan); }
+  .footer-copy { width:100%; text-align:center; color:var(--gray); font-size:0.75rem; margin-top:1.5rem; }
+  .divider { max-width:1200px; margin:0 auto; height:1px; background:linear-gradient(90deg,transparent,rgba(0,212,255,0.2),transparent); }
+
+  @media (max-width:768px) {
+    .nav-links { display:none; }
+    .hamburger { display:flex; }
+    nav.open .nav-links {
+      display:flex; flex-direction:column; position:absolute;
+      top:100%; left:0; right:0; background:rgba(10,10,10,0.95);
+      backdrop-filter:blur(20px); padding:1.5rem 2rem; gap:1.2rem;
+      border-bottom:1px solid rgba(0,212,255,0.1);
+    }
+    .apps-grid,.services-grid { grid-template-columns:1fr; }
+    .yt-banner { flex-direction:column; text-align:center; }
+    .yt-banner-arrow { display:none; }
+    .footer-content { flex-direction:column; text-align:center; }
+    .social-links { justify-content:center; }
+    .footer-links { flex-wrap:wrap; gap:1rem; }
+  }
+</style>
+</head>
+<body>
+
+<nav id="nav">
+  <a href="#" class="nav-logo">CODE<span>IT</span></a>
+  <ul class="nav-links">
+    <li><a href="#apps">Apps</a></li>
+    <li><a href="#servicios">Servicios</a></li>
+    <li><a href="#youtube">YouTube</a></li>
+    <li><a href="https://play.google.com/store/apps/developer?id=Grupo+CODEIT" target="_blank">Google Play</a></li>
+  </ul>
+  <button class="hamburger" onclick="document.getElementById('nav').classList.toggle('open')" aria-label="Menu">
+    <span></span><span></span><span></span>
+  </button>
+</nav>
+
+<section class="hero">
+  <div class="hero-content">
+    <div class="hero-badge">Software & Apps</div>
+    <h1>CODE<span class="accent">IT</span></h1>
+    <p class="hero-sub">Consultoría y Desarrollo de Tecnología Informática. Apps Android, contenido tech y soluciones digitales.</p>
+    <div class="hero-buttons">
+      <a href="#apps" class="btn btn-primary">Ver Apps</a>
+      <a href="https://play.google.com/store/apps/developer?id=Grupo+CODEIT" target="_blank" class="btn btn-outline">Google Play →</a>
+    </div>
+  </div>
+</section>
+
+<div class="divider"></div>
+
+<section id="apps">
+  <div class="section-label">Google Play</div>
+  <h2 class="section-title">Nuestras Apps</h2>
+  <p class="section-desc">Herramientas útiles, gratuitas y diseñadas con Material Design 3 para Android.</p>
+  <div class="apps-grid">
+    <div class="app-card">
+      <div class="app-icon">💰</div>
+      <h3>Savings Calculator</h3>
+      <p>Calculadora de ahorro con soporte multi-moneda, exportación PDF/CSV y centro de recompensas.</p>
+      <span class="app-tag">Finance</span><br>
+      <a href="https://play.google.com/store/apps/details?id=com.grupocodeit.savingscalculator" target="_blank" class="app-link">Download <span>→</span></a>
+    </div>
+    <div class="app-card">
+      <div class="app-icon">⚖️</div>
+      <h3>Convertidor de Libras</h3>
+      <p>Convierte unidades de peso de forma rápida y sencilla. Interfaz limpia y fácil de usar.</p>
+      <span class="app-tag">Tools</span><br>
+      <a href="https://play.google.com/store/apps/details?id=com.grupocodeit.librasaki" target="_blank" class="app-link">Download <span>→</span></a>
+    </div>
+    <div class="app-card">
+      <div class="app-icon">🔢</div>
+      <h3>Calculadora Básica</h3>
+      <p>Calculadora simple con interfaz moderna. Operaciones básicas al alcance de tu mano.</p>
+      <span class="app-tag">Tools</span><br>
+      <a href="https://play.google.com/store/apps/developer?id=Grupo+CODEIT" target="_blank" class="app-link">Download <span>→</span></a>
+    </div>
+    <div class="app-card">
+      <div class="app-icon">📱</div>
+      <h3>Más Apps</h3>
+      <p>Descubre las 7+ aplicaciones disponibles en Google Play. Nuevas apps cada mes.</p>
+      <span class="app-tag">Catálogo</span><br>
+      <a href="https://play.google.com/store/apps/developer?id=Grupo+CODEIT" target="_blank" class="app-link">Ver todas <span>→</span></a>
+    </div>
+  </div>
+</section>
+
+<div class="divider"></div>
+
+<section id="servicios">
+  <div class="section-label">Lo que hacemos</div>
+  <h2 class="section-title">Servicios</h2>
+  <p class="section-desc">Desarrollo de software y soluciones tecnológicas.</p>
+  <div class="services-grid">
+    <div class="service-card">
+      <div class="service-icon">📲</div>
+      <h3>Desarrollo Android</h3>
+      <p>Apps nativas con Kotlin, Jetpack Compose y Material Design 3. Publicación y monetización en Google Play.</p>
+    </div>
+    <div class="service-card">
+      <div class="service-icon">🧪</div>
+      <h3>QA & Testing</h3>
+      <p>Automatización de pruebas con Cypress y Playwright. Estrategias de calidad de software.</p>
+    </div>
+    <div class="service-card">
+      <div class="service-icon">☁️</div>
+      <h3>Consultoría Tech</h3>
+      <p>Arquitectura de software, CI/CD, bases de datos y soluciones cloud.</p>
+    </div>
+  </div>
+</section>
+
+<div class="divider"></div>
+
+<section id="youtube">
+  <div class="section-label">Contenido</div>
+  <h2 class="section-title">YouTube</h2>
+  <p class="section-desc">Tutoriales, desarrollo de software y contenido tech.</p>
+  <a href="https://www.youtube.com/grupocodeit" target="_blank" class="yt-banner">
+    <div class="yt-banner-icon">
+      <svg viewBox="0 0 24 24"><path d="M23.5 6.2a3 3 0 0 0-2.1-2.1C19.5 3.5 12 3.5 12 3.5s-7.5 0-9.4.6A3 3 0 0 0 .5 6.2 31.4 31.4 0 0 0 0 12a31.4 31.4 0 0 0 .5 5.8 3 3 0 0 0 2.1 2.1c1.9.6 9.4.6 9.4.6s7.5 0 9.4-.6a3 3 0 0 0 2.1-2.1c.5-1.9.5-5.8.5-5.8s0-3.9-.5-5.8zM9.5 15.6V8.4l6.3 3.6-6.3 3.6z"/></svg>
+    </div>
+    <div class="yt-banner-text">
+      <h3>GrupoCODEIT en YouTube</h3>
+      <p>Tutoriales de desarrollo, reviews de apps y contenido sobre tecnología.</p>
+    </div>
+    <div class="yt-banner-arrow">→</div>
+  </a>
+</section>
+
+<div class="divider"></div>
+
+<footer>
+  <div class="footer-content">
+    <div class="footer-brand">CODE<span>IT</span></div>
+    <div class="social-links">
+      <a href="https://www.facebook.com/GrupoCodeit/" target="_blank" class="social-link" aria-label="Facebook">
+        <svg viewBox="0 0 24 24"><path d="M24 12.07C24 5.41 18.63 0 12 0S0 5.41 0 12.07c0 6.02 4.39 11.01 10.13 11.93v-8.44H7.08v-3.49h3.04V9.41c0-3.02 1.79-4.69 4.53-4.69 1.31 0 2.68.24 2.68.24v2.97h-1.51c-1.49 0-1.95.93-1.95 1.89v2.26h3.33l-.53 3.49h-2.8v8.44C19.61 23.08 24 18.09 24 12.07z"/></svg>
+      </a>
+      <a href="https://www.instagram.com/grupocodeitsv/" target="_blank" class="social-link" aria-label="Instagram">
+        <svg viewBox="0 0 24 24"><path d="M12 2.16c3.2 0 3.58.01 4.85.07 1.17.05 1.97.25 2.43.41.61.24 1.05.52 1.51.98.46.46.74.9.98 1.51.17.46.36 1.26.41 2.43.06 1.27.07 1.65.07 4.85s-.01 3.58-.07 4.85c-.05 1.17-.25 1.97-.41 2.43a4.07 4.07 0 0 1-.98 1.51c-.46.46-.9.74-1.51.98-.46.17-1.26.36-2.43.41-1.27.06-1.65.07-4.85.07s-3.58-.01-4.85-.07c-1.17-.05-1.97-.25-2.43-.41a4.07 4.07 0 0 1-1.51-.98 4.07 4.07 0 0 1-.98-1.51c-.17-.46-.36-1.26-.41-2.43C2.17 15.58 2.16 15.2 2.16 12s.01-3.58.07-4.85c.05-1.17.25-1.97.41-2.43.24-.61.52-1.05.98-1.51a4.07 4.07 0 0 1 1.51-.98c.46-.17 1.26-.36 2.43-.41C8.42 2.17 8.8 2.16 12 2.16M12 0C8.74 0 8.33.01 7.05.07 5.78.13 4.9.33 4.14.63a5.84 5.84 0 0 0-2.13 1.38A5.84 5.84 0 0 0 .63 4.14C.33 4.9.13 5.78.07 7.05.01 8.33 0 8.74 0 12s.01 3.67.07 4.95c.06 1.27.26 2.15.56 2.91.31.79.72 1.47 1.38 2.13a5.84 5.84 0 0 0 2.13 1.38c.76.3 1.64.5 2.91.56C8.33 23.99 8.74 24 12 24s3.67-.01 4.95-.07c1.27-.06 2.15-.26 2.91-.56a5.84 5.84 0 0 0 2.13-1.38 5.84 5.84 0 0 0 1.38-2.13c.3-.76.5-1.64.56-2.91.06-1.28.07-1.69.07-4.95s-.01-3.67-.07-4.95c-.06-1.27-.26-2.15-.56-2.91a5.84 5.84 0 0 0-1.38-2.13A5.84 5.84 0 0 0 19.86.63C19.1.33 18.22.13 16.95.07 15.67.01 15.26 0 12 0zm0 5.84a6.16 6.16 0 1 0 0 12.32 6.16 6.16 0 0 0 0-12.32zM12 16a4 4 0 1 1 0-8 4 4 0 0 1 0 8zm6.41-11.85a1.44 1.44 0 1 0 0 2.88 1.44 1.44 0 0 0 0-2.88z"/></svg>
+      </a>
+      <a href="https://x.com/GrupoCodeit" target="_blank" class="social-link" aria-label="X">
+        <svg viewBox="0 0 24 24"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg>
+      </a>
+      <a href="https://www.youtube.com/grupocodeit" target="_blank" class="social-link" aria-label="YouTube">
+        <svg viewBox="0 0 24 24"><path d="M23.5 6.2a3 3 0 0 0-2.1-2.1C19.5 3.5 12 3.5 12 3.5s-7.5 0-9.4.6A3 3 0 0 0 .5 6.2 31.4 31.4 0 0 0 0 12a31.4 31.4 0 0 0 .5 5.8 3 3 0 0 0 2.1 2.1c1.9.6 9.4.6 9.4.6s7.5 0 9.4-.6a3 3 0 0 0 2.1-2.1c.5-1.9.5-5.8.5-5.8s0-3.9-.5-5.8zM9.5 15.6V8.4l6.3 3.6-6.3 3.6z"/></svg>
+      </a>
+    </div>
+  </div>
+  <div class="footer-links">
+    <a href="privacy-policy.html">Privacy Policy</a>
+    <a href="terms-of-service.html">Terms of Service</a>
+    <a href="https://play.google.com/store/apps/developer?id=Grupo+CODEIT" target="_blank">Google Play</a>
+  </div>
+  <p class="footer-copy">© 2026 GrupoCODEIT — Consultoría y Desarrollo de Tecnología Informática</p>
+</footer>
+
+</body>
+</html>
