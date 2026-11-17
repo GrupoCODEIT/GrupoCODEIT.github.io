@@ -84,7 +84,7 @@
         <li>The app is free and shows ads. Google's ad, analytics and crash-reporting tools collect some device data, such as your Advertising ID and an approximate location based on your IP address.</li>
         <li>The app tells Firebase Analytics which features you use, such as the category and units of a conversion. It never sends the numbers you type or the results.</li>
         <li>Watching one rewarded ad unlocks a premium feature until midnight. No payment, no account.</li>
-        <li>Where consent is required (for example, in the EEA, the UK and Switzerland), you're asked before any ad is requested, and you can change your choice in Settings &gt; Privacy Choices.</li>
+        <li>Where consent is required (for example, in the EEA, the UK and Switzerland), you're asked before any ad is requested, analytics follows your choice, and you can change it in Settings &gt; Privacy Choices.</li>
         <li>We don't sell your data.</li>
       </ul>
     </div>
@@ -98,7 +98,7 @@
       <li><strong>Conversion history.</strong> Every conversion you confirm is saved with its category, the units, the value you entered, the result, the formula, the number of decimal places and the date and time. It's saved even while the History feature is locked, so it's there when you unlock it.</li>
       <li><strong>Favorites:</strong> the unit pairs you save (category, units and the date you saved them).</li>
       <li><strong>Settings:</strong> real-time conversion on or off, decimal places, number format, default category, language and theme.</li>
-      <li><strong>Premium status:</strong> which features you've unlocked, when, and when they expire.</li>
+      <li><strong>Premium status:</strong> which features you've unlocked and when they expire. For each one, the app stores the date and time you unlocked it, plus a reading of the phone's internal clock, which counts the time since the phone was turned on, so the app can tell if the clock has been changed.</li>
       <li><strong>Your consent choices</strong>, saved by Google's consent tool so you aren't asked every time.</li>
       <li><strong>Exported files.</strong> The CSV and PDF files you export are created in the app's private storage, and you choose where to send them from Android's share menu. We don't receive them.</li>
     </ul>
@@ -110,7 +110,12 @@
     </ul>
 
     <h2>Backup</h2>
-    <p>If Android backup is turned on, Android may save the app's data (history, favorites, settings, premium status and exported files) to your Google account and restore it when you reinstall the app or set up a new phone. This backup is managed by Google under your account; we can't access it. A restored premium feature still ends at the midnight it was unlocked for.</p>
+    <p>If Android backup is turned on, Android may save the app's data to your Google account and restore it when you reinstall the app or set up a new phone. A direct transfer between phones can also move it. This backup is managed by Google under your account; we can't access it.</p>
+    <ul>
+      <li><strong>Included:</strong> your history, favorites, settings and exported files.</li>
+      <li><strong>Left out:</strong> your premium status and the record Google's consent tool keeps of your choices. So premium never moves to another phone, and where consent is required, you're asked again.</li>
+      <li>Firebase and the ads SDK keep their own files, which can include a copy of your consent signals and identifiers such as the app instance ID. These files may be included in the backup and restored.</li>
+    </ul>
 
     <h2>What third-party services collect</h2>
     <p>The app uses services from Google. They run inside the app and collect data directly, under their own policies:</p>
@@ -129,7 +134,7 @@
 
     <h2>Analytics events</h2>
     <p>Besides what Firebase collects automatically, the app records events such as: screens you open; conversions (category and units); use of multi-conversion and conversion chains (category, unit and how many results or steps); favorites and history actions; exports (format and number of records); premium unlocks (which feature, and whether the ad was shown); ads shown or not available; the consent flow (whether ads can be requested, and error codes); and which setting you changed. The app also stores your settings (real-time mode, decimal places, default category, theme, number format and language) as analytics user properties, and adds the app version to every event.</p>
-    <p>The numbers you type, the results, your search text and your saved data are never sent. Crash and error reports describe the technical problem; when a conversion or an export fails, they may include its category, units or file format, never the values.</p>
+    <p>The numbers you type, the results, your search text and your saved data are never sent. Crash and error reports describe the technical problem; when a conversion or an export fails, they may include its category, units or file format, never the values. Crash reports can also include the analytics events recorded just before the crash.</p>
 
     <h2>Advertising ID</h2>
     <p>Google's ad and analytics tools use your device's Advertising ID to show and measure ads and to prevent fraud. You can delete or reset it anytime on Android: Settings &gt; Privacy &gt; Ads (or Settings &gt; Google &gt; Ads, depending on your device). After you delete it, apps can no longer use it for personalized ads. The ads SDK also reads an app set ID, an identifier that Google Play services gives to apps from the same developer; deleting or resetting your Advertising ID doesn't change it.</p>
@@ -139,21 +144,23 @@
 
     <h2>Consent</h2>
     <ul>
-      <li>If you're in a region where consent is required (for example, the European Economic Area, the UK or Switzerland), the app shows Google's consent form. No ads are requested until Google's consent tool confirms they can be.</li>
+      <li>If you're in a region where consent is required (for example, the European Economic Area, the UK or Switzerland), the app shows Google's consent form. No ads are requested until Google's consent tool confirms they can be, and until your choice is known, the app sets all Firebase Analytics consent types to denied.</li>
+      <li>If the app can't reach Google's consent tool before you've made a choice, it requests no ads and denies all analytics consent types. If you've already chosen, it uses the choice saved on your phone.</li>
       <li>If you decline, the app still works. Ads may be limited or non-personalized, as Google defines them, or unavailable, in which case premium features can't be unlocked.</li>
       <li>You can change your choice anytime in Settings &gt; Privacy Choices (shown where it applies to your region).</li>
-      <li>Analytics and crash reporting aren't controlled by the consent form in this version: we rely on our legitimate interest in understanding how the app is used and keeping it working. You can stop them by uninstalling the app, and reset the analytics app instance ID by clearing the app's storage.</li>
+      <li>Firebase Analytics follows your choice through Google Consent Mode v2. When consent is denied, Google may still receive limited, cookieless signals without identifiers, as described in Google's policies. Where consent isn't required, analytics is allowed by default; the Advertising ID controls above still apply.</li>
+      <li>Crash reporting isn't tied to consent: we rely on our legitimate interest in keeping the app working. It can't be turned off inside the app; uninstalling the app stops it.</li>
     </ul>
 
     <h2>Legal bases (EEA, UK and Switzerland)</h2>
     <ul>
-      <li><strong>Consent:</strong> personalized ads and storing and reading information on your device for ads. You give or refuse it in Google's consent form and can change it in Privacy Choices.</li>
-      <li><strong>Legitimate interest:</strong> analytics, crash reporting, fraud prevention and security, and showing non-personalized or limited ads that keep the app free.</li>
+      <li><strong>Consent:</strong> personalized ads, storing and reading information on your device for ads, and analytics storage. You give or refuse it in Google's consent form and can change it in Privacy Choices.</li>
+      <li><strong>Legitimate interest:</strong> crash reporting, fraud prevention and security, showing non-personalized or limited ads that keep the app free, and the limited analytics signals without identifiers that Google may still receive when you decline (see Consent).</li>
       <li><strong>Legal obligation:</strong> keeping a record of your consent choices.</li>
     </ul>
 
     <h2>Premium until midnight</h2>
-    <p>Single conversions are free. Some features are premium: multi-conversion, history, favorites, conversion chains, CSV and PDF export, and no ads. Watching one rewarded ad unlocks the feature you chose (or, with the Full Premium Pass, every premium feature, including dark mode) until midnight, your local time, on the day you watch it. It ends at midnight, not after 24 hours. A feature is unlocked only when Google's ad SDK confirms you earned the reward, usually by watching the ad to the end. The app stores which features are unlocked and when they expire. The next day, you can watch another ad.</p>
+    <p>Single conversions are free. Some features are premium: multi-conversion, history, favorites, conversion chains, CSV and PDF export, dark mode and no ads. Watching one rewarded ad unlocks the feature you chose (or, with the Full Premium Pass, every premium feature) until midnight, your local time, on the day you watch it. It ends at midnight, not after 24 hours. A feature is unlocked only when Google's ad SDK confirms you earned the reward, usually by watching the ad to the end. The app stores which features are unlocked and when they expire, only on your phone: premium isn't included in backups. If the phone's date changes, premium ends, and changing the time zone or setting the clock back can end it too. The next day, you can watch another ad.</p>
 
     <h2>Who receives your data</h2>
     <p>We don't sell your data. Google (AdMob, User Messaging Platform, Firebase) collects the data described above to serve and measure ads, prevent fraud, provide analytics and report crashes, and processes it under its own policies. Through Google's ad auctions, other advertisers and ad technology companies that buy or measure ads through Google may also receive data from ad requests (such as your Advertising ID, IP address and device info, as your consent choices allow); where consent is required, Google's consent form lists them. Google may process this data in the United States and other countries; for data from the EEA, the UK and Switzerland, Google relies on the EU-U.S. Data Privacy Framework (and its UK and Swiss extensions) and on Standard Contractual Clauses. When you export a file, you choose where it goes. If you email us, we use your email address and message only to reply.</p>
@@ -197,7 +204,7 @@
         <li>La app es gratis y muestra anuncios. Las herramientas de anuncios, analítica y reporte de fallos de Google recopilan algunos datos del dispositivo, como tu ID de publicidad y una ubicación aproximada a partir de tu dirección IP.</li>
         <li>La app le dice a Firebase Analytics qué funciones usas, por ejemplo la categoría y las unidades de una conversión. Nunca envía los números que escribes ni los resultados.</li>
         <li>Ver un anuncio recompensado desbloquea una función premium hasta la medianoche. Sin pagos y sin cuenta.</li>
-        <li>Donde se requiere consentimiento (por ejemplo, en el EEE, el Reino Unido y Suiza), se te pregunta antes de solicitar cualquier anuncio, y puedes cambiar tu elección en Ajustes &gt; Opciones de privacidad.</li>
+        <li>Donde se requiere consentimiento (por ejemplo, en el EEE, el Reino Unido y Suiza), se te pregunta antes de solicitar cualquier anuncio, la analítica respeta tu elección y puedes cambiarla en Ajustes &gt; Opciones de privacidad.</li>
         <li>No vendemos tus datos.</li>
       </ul>
     </div>
@@ -211,7 +218,7 @@
       <li><strong>Historial de conversiones.</strong> Cada conversión que confirmas se guarda con su categoría, las unidades, el valor que escribiste, el resultado, la fórmula, la cantidad de decimales y la fecha y hora. Se guarda aunque la función Historial esté bloqueada, para que esté ahí cuando la desbloquees.</li>
       <li><strong>Favoritos:</strong> los pares de unidades que guardas (categoría, unidades y la fecha en que los guardaste).</li>
       <li><strong>Ajustes:</strong> conversión en tiempo real activada o no, decimales, formato de números, categoría predeterminada, idioma y tema.</li>
-      <li><strong>Estado premium:</strong> qué funciones desbloqueaste, cuándo y cuándo vencen.</li>
+      <li><strong>Estado premium:</strong> qué funciones desbloqueaste y cuándo vencen. Para cada una, la app guarda la fecha y hora en que la desbloqueaste y una lectura del reloj interno del teléfono, que cuenta el tiempo desde que se encendió, para saber si se cambió el reloj.</li>
       <li><strong>Tus opciones de consentimiento</strong>, que guarda la herramienta de consentimiento de Google para no preguntarte cada vez.</li>
       <li><strong>Archivos exportados.</strong> Los archivos CSV y PDF que exportas se crean en el almacenamiento privado de la app, y tú eliges a dónde enviarlos desde el menú para compartir de Android. Nosotros no los recibimos.</li>
     </ul>
@@ -223,7 +230,12 @@
     </ul>
 
     <h2>Copia de seguridad</h2>
-    <p>Si tienes activada la copia de seguridad de Android, Android puede guardar los datos de la app (historial, favoritos, ajustes, estado premium y archivos exportados) en tu cuenta de Google y restaurarlos cuando reinstales la app o configures un teléfono nuevo. Esa copia la administra Google en tu cuenta; nosotros no tenemos acceso. Una función premium restaurada vence de todos modos a la medianoche para la que se desbloqueó.</p>
+    <p>Si tienes activada la copia de seguridad de Android, Android puede guardar los datos de la app en tu cuenta de Google y restaurarlos cuando reinstales la app o configures un teléfono nuevo. Una transferencia directa entre teléfonos también puede moverlos. Esa copia la administra Google en tu cuenta; nosotros no tenemos acceso.</p>
+    <ul>
+      <li><strong>Se incluyen:</strong> tu historial, tus favoritos, tus ajustes y los archivos exportados.</li>
+      <li><strong>Quedan fuera:</strong> tu estado premium y el registro de tus opciones que guarda la herramienta de consentimiento de Google. Así, premium nunca pasa a otro teléfono y, donde se requiere consentimiento, se te vuelve a preguntar.</li>
+      <li>Firebase y el SDK de anuncios guardan sus propios archivos, que pueden incluir una copia de tus señales de consentimiento e identificadores como el ID de instancia de la app. Esos archivos pueden incluirse en la copia y restaurarse.</li>
+    </ul>
 
     <h2>Lo que recopilan los servicios de terceros</h2>
     <p>La app usa servicios de Google. Funcionan dentro de la app y recopilan datos directamente, según sus propias políticas:</p>
@@ -242,7 +254,7 @@
 
     <h2>Eventos de analítica</h2>
     <p>Además de lo que Firebase recopila automáticamente, la app registra eventos como: las pantallas que abres; las conversiones (categoría y unidades); el uso de la multiconversión y de las cadenas de conversión (categoría, unidad y cuántos resultados o pasos); acciones en favoritos e historial; exportaciones (formato y cantidad de registros); desbloqueos premium (qué función y si el anuncio se mostró); anuncios mostrados o no disponibles; el flujo de consentimiento (si se pueden solicitar anuncios y códigos de error); y qué ajuste cambiaste. La app también guarda tus ajustes (tiempo real, decimales, categoría predeterminada, tema, formato de números e idioma) como propiedades de usuario de analítica, y agrega la versión de la app a cada evento.</p>
-    <p>Nunca se envían los números que escribes, los resultados, lo que buscas ni tus datos guardados. Los reportes de fallos y errores describen el problema técnico; cuando falla una conversión o una exportación, pueden incluir su categoría, sus unidades o el formato del archivo, nunca los valores.</p>
+    <p>Nunca se envían los números que escribes, los resultados, lo que buscas ni tus datos guardados. Los reportes de fallos y errores describen el problema técnico; cuando falla una conversión o una exportación, pueden incluir su categoría, sus unidades o el formato del archivo, nunca los valores. Los reportes de fallos también pueden incluir los eventos de analítica registrados justo antes del fallo.</p>
 
     <h2>ID de publicidad</h2>
     <p>Las herramientas de anuncios y analítica de Google usan el ID de publicidad de tu dispositivo para mostrar y medir anuncios y prevenir fraude. Puedes borrarlo o restablecerlo cuando quieras en Android: Configuración &gt; Privacidad &gt; Anuncios (o Configuración &gt; Google &gt; Anuncios, según tu dispositivo). Después de borrarlo, las apps ya no pueden usarlo para anuncios personalizados. El SDK de anuncios también lee un ID de conjunto de apps, un identificador que Google Play Services da a las apps de un mismo desarrollador; borrar o restablecer tu ID de publicidad no lo cambia.</p>
@@ -252,21 +264,23 @@
 
     <h2>Consentimiento</h2>
     <ul>
-      <li>Si estás en una región donde se requiere consentimiento (por ejemplo, el Espacio Económico Europeo, el Reino Unido o Suiza), la app muestra el formulario de consentimiento de Google. No se solicita ningún anuncio hasta que la herramienta de consentimiento de Google confirma que se puede.</li>
+      <li>Si estás en una región donde se requiere consentimiento (por ejemplo, el Espacio Económico Europeo, el Reino Unido o Suiza), la app muestra el formulario de consentimiento de Google. No se solicita ningún anuncio hasta que la herramienta de consentimiento de Google confirma que se puede y, mientras no se conoce tu elección, la app pone en denegado todos los tipos de consentimiento de Firebase Analytics.</li>
+      <li>Si la app no puede comunicarse con la herramienta de consentimiento de Google antes de que elijas, no solicita anuncios y deniega todos los tipos de consentimiento de analítica. Si ya elegiste, usa la elección guardada en tu teléfono.</li>
       <li>Si no aceptas, la app sigue funcionando. Los anuncios pueden ser limitados o no personalizados, según los define Google, o no estar disponibles; en ese caso no se pueden desbloquear funciones premium.</li>
       <li>Puedes cambiar tu elección cuando quieras en Ajustes &gt; Opciones de privacidad (aparece donde aplica a tu región).</li>
-      <li>En esta versión, la analítica y el reporte de fallos no dependen del formulario de consentimiento: nos basamos en nuestro interés legítimo en entender cómo se usa la app y mantenerla funcionando. Puedes detenerlos desinstalando la app, y restablecer el ID de instancia de analítica borrando el almacenamiento de la app.</li>
+      <li>Firebase Analytics sigue tu elección mediante el Modo de consentimiento v2 de Google. Si niegas el consentimiento, Google aún puede recibir señales limitadas, sin cookies ni identificadores, como se describe en sus políticas. Donde no se requiere consentimiento, la analítica está permitida por defecto; los controles del ID de publicidad de arriba siguen aplicando.</li>
+      <li>El reporte de fallos no depende del consentimiento: nos basamos en nuestro interés legítimo en mantener la app funcionando. No se puede desactivar dentro de la app; se detiene al desinstalarla.</li>
     </ul>
 
     <h2>Bases legales (EEE, Reino Unido y Suiza)</h2>
     <ul>
-      <li><strong>Consentimiento:</strong> anuncios personalizados y guardar y leer información en tu dispositivo para anuncios. Lo das o lo niegas en el formulario de consentimiento de Google y puedes cambiarlo en Opciones de privacidad.</li>
-      <li><strong>Interés legítimo:</strong> analítica, reporte de fallos, prevención de fraude y seguridad, y mostrar anuncios no personalizados o limitados que mantienen la app gratis.</li>
+      <li><strong>Consentimiento:</strong> anuncios personalizados, guardar y leer información en tu dispositivo para anuncios, y el almacenamiento de analítica. Lo das o lo niegas en el formulario de consentimiento de Google y puedes cambiarlo en Opciones de privacidad.</li>
+      <li><strong>Interés legítimo:</strong> reporte de fallos, prevención de fraude y seguridad, mostrar anuncios no personalizados o limitados que mantienen la app gratis, y las señales limitadas de analítica sin identificadores que Google aún puede recibir cuando lo niegas (consulta Consentimiento).</li>
       <li><strong>Obligación legal:</strong> conservar un registro de tus opciones de consentimiento.</li>
     </ul>
 
     <h2>Premium hasta la medianoche</h2>
-    <p>Las conversiones individuales son gratis. Algunas funciones son premium: multiconversión, historial, favoritos, cadenas de conversión, exportación a CSV y PDF, y sin anuncios. Ver un anuncio recompensado desbloquea la función que elegiste (o, con el Pase Premium Total, todas las funciones premium, incluido el modo oscuro) hasta la medianoche, en tu hora local, del día en que lo ves. Vence a la medianoche, no después de 24 horas. Una función se desbloquea solo cuando el SDK de anuncios de Google confirma que ganaste la recompensa, normalmente al ver el anuncio hasta el final. La app guarda qué funciones están desbloqueadas y cuándo vencen. Al día siguiente puedes ver otro anuncio.</p>
+    <p>Las conversiones individuales son gratis. Algunas funciones son premium: multiconversión, historial, favoritos, cadenas de conversión, exportación a CSV y PDF, modo oscuro y sin anuncios. Ver un anuncio recompensado desbloquea la función que elegiste (o, con el Pase Premium Total, todas las funciones premium) hasta la medianoche, en tu hora local, del día en que lo ves. Vence a la medianoche, no después de 24 horas. Una función se desbloquea solo cuando el SDK de anuncios de Google confirma que ganaste la recompensa, normalmente al ver el anuncio hasta el final. La app guarda qué funciones están desbloqueadas y cuándo vencen, solo en tu teléfono: premium no se incluye en las copias de seguridad. Si cambia la fecha del teléfono, premium termina, y cambiar la zona horaria o atrasar el reloj también puede terminarlo. Al día siguiente puedes ver otro anuncio.</p>
 
     <h2>Quién recibe tus datos</h2>
     <p>No vendemos tus datos. Google (AdMob, User Messaging Platform, Firebase) recopila los datos descritos arriba para mostrar y medir anuncios, prevenir fraude, ofrecer analítica y reportar fallos, y los trata según sus propias políticas. A través de las subastas de anuncios de Google, otros anunciantes y empresas de tecnología publicitaria que compran o miden anuncios mediante Google también pueden recibir datos de las solicitudes de anuncios (como tu ID de publicidad, tu dirección IP y la información del dispositivo, según lo permitan tus opciones de consentimiento); donde se requiere consentimiento, el formulario de Google los enumera. Google puede tratar estos datos en Estados Unidos y otros países; para los datos del EEE, el Reino Unido y Suiza, Google se apoya en el Marco de Privacidad de Datos UE-EE. UU. (y sus extensiones para el Reino Unido y Suiza) y en Cláusulas Contractuales Tipo. Cuando exportas un archivo, tú eliges a dónde va. Si nos escribes, usamos tu correo y tu mensaje solo para responderte.</p>
