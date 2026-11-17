@@ -1,0 +1,309 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Convertify — Conversor de Unidades</title>
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+
+    :root {
+      --primary: #3A5BC7;
+      --primary-light: #6B8EFF;
+      --bg: #FAF9FF;
+      --surface: #FFFFFF;
+      --text: #1A1A2E;
+      --muted: #6B7280;
+      --border: #E5E7EB;
+    }
+
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+      background: var(--bg);
+      color: var(--text);
+    }
+
+    /* NAV */
+    nav {
+      position: sticky; top: 0; z-index: 100;
+      background: rgba(255,255,255,0.85);
+      backdrop-filter: blur(12px);
+      border-bottom: 1px solid var(--border);
+      padding: 0 2rem;
+      display: flex; align-items: center; justify-content: space-between;
+      height: 64px;
+    }
+    .nav-brand {
+      font-size: 1.25rem; font-weight: 800;
+      background: linear-gradient(135deg, var(--primary), var(--primary-light));
+      -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+      text-decoration: none;
+    }
+    .nav-links { display: flex; gap: 2rem; list-style: none; }
+    .nav-links a {
+      text-decoration: none; color: var(--muted); font-size: 0.9rem;
+      transition: color 0.2s;
+    }
+    .nav-links a:hover { color: var(--primary); }
+
+    /* HERO */
+    .hero {
+      text-align: center;
+      padding: 6rem 1.5rem 5rem;
+      background: linear-gradient(160deg, #F0F4FF 0%, #FAF9FF 60%);
+    }
+    .hero-badge {
+      display: inline-block;
+      background: linear-gradient(135deg, #E8EEFF, #D4DDFF);
+      color: var(--primary);
+      font-size: 0.78rem; font-weight: 700; letter-spacing: 0.08em;
+      text-transform: uppercase;
+      padding: 0.35rem 1rem; border-radius: 999px;
+      margin-bottom: 1.5rem;
+    }
+    .hero h1 {
+      font-size: clamp(2.2rem, 5vw, 3.8rem);
+      font-weight: 900; line-height: 1.15;
+      margin-bottom: 1.25rem;
+    }
+    .hero h1 span {
+      background: linear-gradient(135deg, var(--primary), var(--primary-light));
+      -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+    }
+    .hero p {
+      font-size: 1.1rem; color: var(--muted);
+      max-width: 520px; margin: 0 auto 2.5rem; line-height: 1.7;
+    }
+    .btn-primary {
+      display: inline-flex; align-items: center; gap: 0.5rem;
+      background: linear-gradient(135deg, var(--primary), #5B7FFF);
+      color: #fff; font-size: 1rem; font-weight: 700;
+      padding: 0.85rem 2rem; border-radius: 14px;
+      text-decoration: none;
+      box-shadow: 0 8px 24px rgba(58,91,199,0.35);
+      transition: transform 0.2s, box-shadow 0.2s;
+    }
+    .btn-primary:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 12px 32px rgba(58,91,199,0.4);
+    }
+    .hero-img {
+      margin-top: 4rem;
+      display: flex; justify-content: center;
+    }
+    .phone-mockup {
+      width: 220px;
+      background: linear-gradient(160deg, var(--primary), #5B7FFF);
+      border-radius: 36px;
+      padding: 1.5rem 1rem;
+      box-shadow: 0 32px 80px rgba(58,91,199,0.3);
+      color: #fff;
+    }
+    .mockup-bar { height: 6px; background: rgba(255,255,255,0.3); border-radius: 3px; margin-bottom: 1rem; }
+    .mockup-row { height: 40px; background: rgba(255,255,255,0.15); border-radius: 10px; margin-bottom: 0.6rem; }
+    .mockup-row.accent { background: rgba(255,255,255,0.3); }
+    .mockup-result { font-size: 1.6rem; font-weight: 800; text-align: center; padding: 0.5rem 0; }
+    .mockup-label { font-size: 0.7rem; opacity: 0.7; text-align: center; }
+
+    /* FEATURES */
+    .features {
+      padding: 5rem 1.5rem;
+      max-width: 1100px; margin: 0 auto;
+    }
+    .section-title {
+      text-align: center; margin-bottom: 3rem;
+    }
+    .section-title h2 { font-size: 2rem; font-weight: 800; margin-bottom: 0.5rem; }
+    .section-title p { color: var(--muted); font-size: 1rem; }
+    .features-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 1.5rem;
+    }
+    .feature-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 20px;
+      padding: 1.75rem;
+      transition: transform 0.2s, box-shadow 0.2s;
+    }
+    .feature-card:hover {
+      transform: translateY(-4px);
+      box-shadow: 0 16px 40px rgba(0,0,0,0.08);
+    }
+    .feature-icon {
+      width: 48px; height: 48px; border-radius: 14px;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 1.4rem; margin-bottom: 1rem;
+    }
+    .feature-card h3 { font-size: 1.05rem; font-weight: 700; margin-bottom: 0.4rem; }
+    .feature-card p { font-size: 0.9rem; color: var(--muted); line-height: 1.6; }
+
+    /* CATEGORIES */
+    .categories {
+      background: linear-gradient(160deg, #F0F4FF, #FAF9FF);
+      padding: 5rem 1.5rem;
+    }
+    .categories-inner { max-width: 1100px; margin: 0 auto; }
+    .cats-grid {
+      display: flex; flex-wrap: wrap; gap: 0.75rem;
+      justify-content: center; margin-top: 2.5rem;
+    }
+    .cat-chip {
+      display: flex; align-items: center; gap: 0.5rem;
+      background: #fff;
+      border: 1px solid var(--border);
+      border-radius: 999px;
+      padding: 0.45rem 1rem;
+      font-size: 0.85rem; font-weight: 600;
+      color: var(--text);
+    }
+    .cat-dot { width: 8px; height: 8px; border-radius: 50%; }
+
+    /* FOOTER */
+    footer {
+      border-top: 1px solid var(--border);
+      padding: 3rem 1.5rem;
+      text-align: center;
+    }
+    footer .footer-brand {
+      font-size: 1.2rem; font-weight: 800;
+      background: linear-gradient(135deg, var(--primary), var(--primary-light));
+      -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+      margin-bottom: 0.5rem;
+    }
+    footer .footer-by { font-size: 0.85rem; color: var(--muted); margin-bottom: 1.5rem; }
+    footer .footer-links { display: flex; gap: 1.5rem; justify-content: center; flex-wrap: wrap; }
+    footer .footer-links a {
+      font-size: 0.85rem; color: var(--muted); text-decoration: none;
+      transition: color 0.2s;
+    }
+    footer .footer-links a:hover { color: var(--primary); }
+    footer .footer-copy { margin-top: 1.5rem; font-size: 0.8rem; color: #9CA3AF; }
+  </style>
+</head>
+<body>
+
+<nav>
+  <a class="nav-brand" href="index.html">Convertify</a>
+  <ul class="nav-links">
+    <li><a href="#features">Funciones</a></li>
+    <li><a href="#categories">Categorías</a></li>
+    <li><a href="privacy.html">Privacidad</a></li>
+  </ul>
+</nav>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="hero-badge">📱 Disponible en Android</div>
+  <h1>El conversor de unidades<br><span>que siempre quisiste</span></h1>
+  <p>332 unidades, 22 categorías, conversiones en tiempo real. Rápido, claro y las conversiones funcionan sin conexión.</p>
+  <a class="btn-primary" href="https://play.google.com/store/apps/details?id=com.grupocodeit.convertifyapp">
+    <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M3 20.5v-17c0-.83 1-.83 1.5-.43l15 8.43a.5.5 0 0 1 0 .87l-15 8.43c-.5.4-1.5.4-1.5-.3z"/></svg>
+    Descargar gratis
+  </a>
+
+  <div class="hero-img">
+    <div class="phone-mockup">
+      <div class="mockup-bar"></div>
+      <div class="mockup-row accent"></div>
+      <div class="mockup-row"></div>
+      <div class="mockup-result">1,850 km</div>
+      <div class="mockup-label">de Metro a Kilómetro</div>
+      <div style="height:0.75rem"></div>
+      <div class="mockup-row"></div>
+      <div class="mockup-row"></div>
+      <div class="mockup-row"></div>
+    </div>
+  </div>
+</section>
+
+<!-- FEATURES -->
+<section class="features" id="features">
+  <div class="section-title">
+    <h2>Todo lo que necesitas</h2>
+    <p>Sin complicaciones y sin suscripciones. Las funciones premium se desbloquean gratis viendo un anuncio, hasta la medianoche.</p>
+  </div>
+  <div class="features-grid">
+    <div class="feature-card">
+      <div class="feature-icon" style="background:#EEF2FF;">⚡</div>
+      <h3>Tiempo real</h3>
+      <p>Convierte mientras escribes. Sin botones, sin esperas. El resultado aparece al instante.</p>
+    </div>
+    <div class="feature-card">
+      <div class="feature-icon" style="background:#F0FDF4;">🔄</div>
+      <h3>Multi-conversión</h3>
+      <p>Convierte un valor a todas las unidades de una categoría al mismo tiempo. Perfecto para comparar.</p>
+    </div>
+    <div class="feature-card">
+      <div class="feature-icon" style="background:#FFF7ED;">🔗</div>
+      <h3>Cadenas de conversión</h3>
+      <p>Encadena múltiples conversiones en secuencia. Metros → Pies → Pulgadas, todo en un solo flujo.</p>
+    </div>
+    <div class="feature-card">
+      <div class="feature-icon" style="background:#FDF2F8;">⭐</div>
+      <h3>Favoritos</h3>
+      <p>Guarda tus conversiones más usadas para acceder a ellas con un solo toque.</p>
+    </div>
+    <div class="feature-card">
+      <div class="feature-icon" style="background:#F0F9FF;">📋</div>
+      <h3>Historial</h3>
+      <p>Revisa tus conversiones anteriores y expórtalas a PDF o CSV.</p>
+    </div>
+    <div class="feature-card">
+      <div class="feature-icon" style="background:#F5F3FF;">🌙</div>
+      <h3>Tema oscuro</h3>
+      <p>Cuida tus ojos en la noche. Modo oscuro disponible como función premium.</p>
+    </div>
+  </div>
+</section>
+
+<!-- CATEGORIES -->
+<section class="categories" id="categories">
+  <div class="categories-inner">
+    <div class="section-title">
+      <h2>22 categorías, 332 unidades</h2>
+      <p>De las más comunes a las más especializadas.</p>
+    </div>
+    <div class="cats-grid">
+      <div class="cat-chip"><div class="cat-dot" style="background:#4A90D9"></div>Longitud</div>
+      <div class="cat-chip"><div class="cat-dot" style="background:#E8505B"></div>Peso / Masa</div>
+      <div class="cat-chip"><div class="cat-dot" style="background:#26A69A"></div>Volumen</div>
+      <div class="cat-chip"><div class="cat-dot" style="background:#FF8A65"></div>Temperatura</div>
+      <div class="cat-chip"><div class="cat-dot" style="background:#66BB6A"></div>Área</div>
+      <div class="cat-chip"><div class="cat-dot" style="background:#7E57C2"></div>Velocidad</div>
+      <div class="cat-chip"><div class="cat-dot" style="background:#5C6BC0"></div>Tiempo</div>
+      <div class="cat-chip"><div class="cat-dot" style="background:#78909C"></div>Almacenamiento</div>
+      <div class="cat-chip"><div class="cat-dot" style="background:#FF7043"></div>Presión</div>
+      <div class="cat-chip"><div class="cat-dot" style="background:#FFA726"></div>Energía</div>
+      <div class="cat-chip"><div class="cat-dot" style="background:#EF5350"></div>Potencia</div>
+      <div class="cat-chip"><div class="cat-dot" style="background:#9575CD"></div>Frecuencia</div>
+      <div class="cat-chip"><div class="cat-dot" style="background:#4CAF50"></div>Economía de combustible</div>
+      <div class="cat-chip"><div class="cat-dot" style="background:#26C6DA"></div>Ángulo</div>
+      <div class="cat-chip"><div class="cat-dot" style="background:#42A5F5"></div>Transferencia de datos</div>
+      <div class="cat-chip"><div class="cat-dot" style="background:#EC407A"></div>Fuerza</div>
+      <div class="cat-chip"><div class="cat-dot" style="background:#8D6E63"></div>Torque</div>
+      <div class="cat-chip"><div class="cat-dot" style="background:#5C6BC0"></div>Corriente eléctrica</div>
+      <div class="cat-chip"><div class="cat-dot" style="background:#AB47BC"></div>Voltaje</div>
+      <div class="cat-chip"><div class="cat-dot" style="background:#FF5722"></div>Cocina</div>
+      <div class="cat-chip"><div class="cat-dot" style="background:#FFB300"></div>Luminosidad</div>
+      <div class="cat-chip"><div class="cat-dot" style="background:#E53935"></div>Radiactividad</div>
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div class="footer-brand">Convertify</div>
+  <div class="footer-by">by GRUPO CODEIT</div>
+  <div class="footer-links">
+    <a href="privacy.html">Política de Privacidad</a>
+    <a href="terms.html">Términos de Uso</a>
+    <a href="disclaimer.html">Exención de Responsabilidad</a>
+    <a href="https://play.google.com/store/apps/details?id=com.grupocodeit.convertifyapp">Google Play</a>
+  </div>
+  <div class="footer-copy">© 2026 GRUPO CODEIT. Todos los derechos reservados.</div>
+</footer>
+
+</body>
+</html>
